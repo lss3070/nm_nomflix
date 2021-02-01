@@ -1,4 +1,5 @@
 import React from "react";
+import { MovieApi, TVApi } from "../../api";
 import DetailPresenter from "./DetailPresenter";
 
 
@@ -10,6 +11,8 @@ export default class extends React.Component{
         loading:true
     }
     
+  
+
     render() {
         const {result,error,loading}= this.state;
         return (

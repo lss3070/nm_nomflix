@@ -12,6 +12,24 @@ export default class extends React.Component{
         loading:true
     }
     
+    async componentDidMout(){
+        try{
+            const {data: {results:topRated} }
+            = await tvApi.topRated();
+            const {data: {results:popular} }
+            = await tvApi.popular();
+            const {data: {results:airtingTday}}
+             = await tvApi.airingToday();
+
+            this.setState({topRated,popular,airtingTday})
+        }catch(e){
+            this.setState({
+                error:"Cna't find TV information"
+            })
+        }finally{
+            this.setState({loading:false})
+        }
+    }
 
     async componentDidMount(){
         try{

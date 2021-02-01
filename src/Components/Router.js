@@ -12,9 +12,9 @@ export default() => (
         <Header/>
         <Switch>
             <Route path="/" exact component={Home}/>
-            <Route path="/TV" exact component={TV}/>
+            <Route path="/tv" exact component={TV}/>
             <Route path="/TV/popular" exact render={() =>< h1 > Popular</h1>}/>
-            <Route path="/Search" exact component={Search}/>
+            <Route path="/search" component={Search}/>
             <Redirect from="*" to="/"/>
         </Switch>
     </Router>
