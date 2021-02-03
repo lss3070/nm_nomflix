@@ -21,6 +21,7 @@ export default class extends React.Component{
             const {data:{results:popular}// :~ 변수명 변경
         } = await moviesApi.popular();
 
+
             this.setState({
                 nowPlaying:nowPlaying,
                 upcoming:upcoming,

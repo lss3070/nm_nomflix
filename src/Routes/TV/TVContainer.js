@@ -46,6 +46,7 @@ export default class extends React.Component{
             popular:popular,
             airingTday:airingTday
         })
+        
         }catch(e){
             this.setState({
                 error:"Cant't find TV information."

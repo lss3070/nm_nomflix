@@ -16,7 +16,6 @@ export default class extends React.Component{
     handleSubmit=(e)=>{
         e.preventDefault();
         const {searchTerm} = this.state;
-        console.log("!");
         if(searchTerm !==""){
             this.searchByTerm();
         }
@@ -33,32 +32,34 @@ export default class extends React.Component{
         const {searchTerm} = this.state;
         this.setState({loading:true});
         try{
-            let movie=await MovieApi.search(searchTerm)
-            let tv=await TVApi.search(searchTerm)
-           console.log(movie);
-           console.log(tv);
+            const{
+                data:{results: movieResults }
+            }=await MovieApi.search(searchTerm);
+            const {
+                data:{results: tvResults }
+            }=await TVApi.search(searchTerm);
+                
             this.setState({
-                movieResults:movie,
-                tvResults:tv
+                tvResults,
+                movieResults,
             });
-
-        }catch{
+        }catch(e){
             this.setState({error:"can't find results"});
         }finally{
-            this.state({loading:false});
+            
+            this.setState({loading:false});
         }
     }
     
     render() {
         const {movieResults,tvResults,searchTerm,loading,error}= this.state;
-        console.log(this.state)
         return (
             <SearchPresenter
                 movieResults={movieResults}
                 tvResults={tvResults}
-                searchTerm={searchTerm}
-                error={error}
                 loading={loading}
+                error={error}
+                searchTerm={searchTerm}
                 handleSubmit={this.handleSubmit}
                 updateTerm={this.updateTerm}
             />

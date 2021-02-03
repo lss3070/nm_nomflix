@@ -4,6 +4,9 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import Loader from "../../Components/Loader"
 import Section from "../../Components/Section"
+import Message from "../../Components/Message"
+
+
 
 const Container= styled.div`
     padding:0px 20px;
@@ -21,33 +24,58 @@ const Input = styled.input `
 
 `;
 
-
-
-const SearchPresenter = ({movieResults,tvResults,loading,error,searchTerm,handleSubmit,updateTerm})=>
+const SearchPresenter = ({
+    movieResults,
+    tvResults,
+    loading,
+    error,
+    searchTerm,
+    handleSubmit,
+    updateTerm
+    }) => (
 <Container>
     <Form onSubmit={handleSubmit}>
         <Input placeholder="Search Movies or Tv Shows..." value={searchTerm} onChange={updateTerm}/>
     </Form>
-    {loading?<Loader/>:<>
-        ({movieResults && movieResults.lenght>0 && (
-        <Section title="Movie Results">
-            {movieResults.map(movie=>(<span></span>
+    {loading ?( <Loader/>) :(
+    <>
+        {movieResults && movieResults.length >0 && (
+            <Section title="Movie Results">
+            {movieResults.map(e=>(
+                <span key={e.id}>{e.title}</span>
             ))}
         </Section>
         )}
+        {tvResults && tvResults.length >0 && (
+        <Section title="Movie Results">
+            {tvResults.map(tv=>(
+                <span key={tv.id}>{tv.name}</span>
+            ))}
+        </Section>
+        )}
+        {error && <Message text={error} color="#e74c3c"/>}
+        
+         {tvResults && 
+         movieResults && 
+         tvResults.length ===0 && 
+         movieResults.length === 0&&
+         (<Message text="Noting for" color="#95a5a6"/>
+         )}
         </>
-        }
+    )}
+      
+        
 </Container>
-;
+);
 
 SearchPresenter.propTypes={
     movieResults:PropTypes.array,
     tvResults:PropTypes.array,
-    loading:PropTypes.bool.isRequired,
     error:PropTypes.string,
     searchTerm:PropTypes.string,
+    loading:PropTypes.bool.isRequired,
     handleSubmit:PropTypes.func.isRequired,
     updateTerm:PropTypes.func.isRequired
-}
+};
 
 export default SearchPresenter;

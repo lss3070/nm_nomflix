@@ -3,6 +3,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import Section from "../../Components/Section"
+import Message from "../../Components/Message"
 
 const Container=styled.div`
 padding:0px 20px`;
@@ -18,6 +19,8 @@ const TVPresenter = ({topRated,popular,airingTday,loading,error})=>loading?null:
     {airingTday&& airingTday.length>0&&
     <Section title="Airing Today">
         {airingTday.map(show=>show.name)}</Section>}
+        {error && <Message text={error} color="#e74c3c"/>}
+        
 </Container>;
 
 TVPresenter.propTypes={
