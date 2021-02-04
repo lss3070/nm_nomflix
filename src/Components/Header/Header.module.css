@@ -1,0 +1,10 @@
+.navList {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.navList:hover {
+  background-color: blue;
+}
+/*# sourceMappingURL=Header.module.css.map */

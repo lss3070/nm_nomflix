@@ -6,6 +6,8 @@ import Loader from "../../Components/Loader"
 import Section from "../../Components/Section"
 import Message from "../../Components/Message"
 
+import Poster from "../../Components/Poster"
+
 
 
 const Container= styled.div`
@@ -41,8 +43,15 @@ const SearchPresenter = ({
     <>
         {movieResults && movieResults.length >0 && (
             <Section title="Movie Results">
-            {movieResults.map(e=>(
-                <span key={e.id}>{e.title}</span>
+            {movieResults.map(movie=>(
+                  <Poster
+                  id={movie.id}
+                 key={movie.id}
+                 title={movie.original_title}
+                 imageUrl={movie.poster_path}
+                 rating={movie.vote_average}
+                 isMovie={true}
+                 year={movie.release_date.substring(0,4)}/>
             ))}
         </Section>
         )}
