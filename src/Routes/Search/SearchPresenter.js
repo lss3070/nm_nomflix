@@ -61,7 +61,14 @@ const SearchPresenter = ({
         {tvResults && tvResults.length >0 && (
         <Section title="Movie Results">
             {tvResults.map(tv=>(
-                <span key={tv.id}>{tv.name}</span>
+                   <Poster
+                   id={tv.id}
+                  key={tv.id}
+                  title={tv.original_name}
+                  imageUrl={tv.poster_path}
+                  rating={tv.vote_average}
+                  isMovie={false}
+                  year={tv.first_air_date.substring(0,4)}/>
             ))}
         </Section>
         )}

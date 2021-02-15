@@ -1,6 +1,7 @@
 import React from "react";
 import {MovieApi, TVApi} from "../../api";
-import DetailPresenter from "./DetailPresenter";
+import MovieDetailPresenter from "./MovieDetailPresenter";
+import TVDetailPresenter from "./TVDetailPresenter";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default class extends React.Component {
@@ -31,22 +32,25 @@ export default class extends React.Component {
                 pathname
             }
         } = this.props;
-        const {isMovie} = this.state
-        console.log(`!!! ${isMovie}`);
+        const {isMovie} = this.state;
         const parsedId = parseInt(id);
         if (isNaN(parsedId)) {
             return push("/");
         }
 
         let result=null;
+        let season=null;
         try{
             if(isMovie)
                 //const ={}와 같음
                 //let request = await MovieApi.movieDetail(parsedId))
                 //result = request.data와 같음
                 ({data:result}=await MovieApi.movieDetail(parsedId));
-            else
-               ({data:result}= await TVApi.showDetail(parsedId));
+            else{
+                ({data:season}= await TVApi.season(parsedId,1));
+                ({data:result}= await TVApi.showDetail(parsedId));
+                result.episodes=[...season.episodes];
+            }
         }catch(e){
             this.setState({error:"Cant't find anything."})
         }finally{
@@ -55,10 +59,12 @@ export default class extends React.Component {
     }
 
     render() {
-        const {result, error, loading} = this.state;
+        const {result, error, loading,isMovie} = this.state;
         console.log(result);
         return (
-            <DetailPresenter result={result} error={error} loading={loading}/>
+            isMovie? <MovieDetailPresenter result={result} error={error} loading={loading}/>:
+            <TVDetailPresenter result={result}  error={error} loading={loading}/>
+           
         );
     }
 }

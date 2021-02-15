@@ -6,6 +6,7 @@ import Home from "../Routes/Home";
 import Search from "../Routes/Search";
 import TV from "../Routes/TV";
 import Detail from "../Routes/Detail";
+import Collection from "../Routes/Collections";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default() => (
@@ -18,6 +19,7 @@ export default() => (
             <Route path="/search" component={Search}/>
             <Route path="/movie/:id" component={Detail}/>
             <Route path="/show/:id" component={Detail}/>
+            <Route path="/collections/:id" component={Collection}/>
             <Redirect from="*" to="/"/>
         </Switch>
     </Router>

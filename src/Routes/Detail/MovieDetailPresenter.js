@@ -127,8 +127,21 @@ const Productions= styled.a`
 const Languages = styled.a`
 color:white;
 `
+const Collections= styled(Link)`
 
-const DetailPresenter = ({result,loading,error})=>(
+background:url(${props=>props.bgImage});
+    background-size:cover;
+    background-position:center center;
+    background-repeat:no-repeat;
+    display:inline-block;
+    width:50px;
+    height:50px;   
+    &:hover{
+        cursor: pointer;
+    }
+`
+
+const MovieDetailPresenter = ({result,loading,error})=>(
     loading?
     <> 
     <Helmet>
@@ -173,17 +186,19 @@ const DetailPresenter = ({result,loading,error})=>(
         </Item>
     </ItemContainer>
     <Overview>{result.overview}</Overview>
+{result.belongs_to_collection&&
+<Collections to={result.belongs_to_collection.id&&`/collections/${result.belongs_to_collection.id}`}
+bgImage={result.belongs_to_collection.poster_path?
+`https://image.tmdb.org/t/p/original${result.belongs_to_collection.poster_path}`:""}
 
-
-
-
-    {result.videos.results&&result.videos.results.length>0&&
-     <VideoArea>
-        {result.videos.results.map((video)=>
-            <Video key={video.id} src={`https://www.youtube.com/embed/${video.key}?controls=0`}></Video>
-        )}     
-    </VideoArea>}
+></Collections>}
    
+{result.videos.results&&result.videos.results.length>0&&
+            <VideoArea>
+               {result.videos.results.map((video)=>
+                   <Video key={video.id} src={`https://www.youtube.com/embed/${video.key}?controls=0`}></Video>
+               )}     
+           </VideoArea>}
    </Data>
     
     <ProductionData>
@@ -220,14 +235,15 @@ const DetailPresenter = ({result,loading,error})=>(
     }
     </ProductionData>
     </Content>
+
     </Container>
 
 );
 
-DetailPresenter.propTypes={
+MovieDetailPresenter.propTypes={
    result:PropTypes.object,
     loading:PropTypes.bool.isRequired,
     error:PropTypes.string
 }
 
-export default DetailPresenter;
+export default MovieDetailPresenter;

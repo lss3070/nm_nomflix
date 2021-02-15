@@ -23,7 +23,8 @@ export const MovieApi={
         params:{
             query:encodeURIComponent(term) 
         }
-    })
+    }),
+    collections:(id)=>api.get(`collection/${id}`)
 }
 
 export const TVApi= {
@@ -39,8 +40,10 @@ export const TVApi= {
         params:{
             query:encodeURIComponent(term) 
         }
-    })
+    }),
+    season:(id,num)=>api.get(`tv/${id}/season/${num}`)
 }
+
 
 
 export default api;
