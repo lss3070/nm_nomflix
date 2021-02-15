@@ -3,13 +3,12 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import {Link} from "react-router-dom";
 
-const baseUrl=""
-
-const Container =styled.div`
-font-size:12px`;
+// const baseUrl=""
 
 
-
+const Container = styled.div`
+font-size:12px
+`
 
 const Image=styled.div`
     background-image:url(${props=>props.bgUrl});
@@ -18,7 +17,6 @@ const Image=styled.div`
     border-radius:4px;
     background-position:center center;
     transition:opacity 0.1s linear;
-
 `;
 
 const Rating= styled.span`
@@ -76,8 +74,7 @@ Poster.propTypes={
     imageUrl:PropTypes.string,
     title:PropTypes.string.isRequired,
     rating:PropTypes.number,
-    year:PropTypes.string,
-
+    year:PropTypes.string
 }
 
 export default Poster;
