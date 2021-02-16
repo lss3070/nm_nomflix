@@ -12,7 +12,7 @@ const Container = styled.div`
     padding:20px; 
 `;
 
-const CollectionsPresenter = ({collections,error,loading})=>(
+const CollectionsPresenter = ({collections,seasions,error,loading})=>(
     <>
         <Helmet>
     <title>Collections | Subflex</title>
@@ -34,13 +34,35 @@ const CollectionsPresenter = ({collections,error,loading})=>(
                 year={movie.release_date.substring(0,4)}/>
             )}</Section>
         )}
+    {
+        seasions&&seasions.length>0&&(
+            seasions.map((seasion)=>
+            <>
+                {seasion&&seasion.episodes&&seasion.episodes.length>0&&(
+                    <Section title={seasion.name}>
+                    {seasion.episodes.map(tv=>
+                        <Poster
+                        id={seasion.origin_id}
+                        key={tv.id}
+                        title={tv.name}
+                        imageUrl={tv.still_path}
+                        rating={tv.vote_average}
+                        isMovie={false}
+                        year={tv.air_date.substring(0,4)}/>
+                    )}</Section>
+                )}
+            </>
+        )
+    )
+        }
             {error && <Message text={error} color="#e74c3c"/>}
    </Container>}
     </>
 );
 
 CollectionsPresenter.propTypes={
-    collections:PropTypes.bool.isRequired,
+    collections:PropTypes.bool,
+    seasions:PropTypes.array,
     error:PropTypes.string,
     loading:PropTypes.bool.isRequired,
 }

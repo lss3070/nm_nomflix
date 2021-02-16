@@ -46,14 +46,12 @@ export default class extends React.Component{
         }catch(e){
             this.setState({error:"can't find results"});
         }finally{
-            console.log(this.state);
             this.setState({loading:false});
         }
     }
     
     render() {
         const {movieResults,tvResults,searchTerm,loading,error}= this.state;
-        console.log(tvResults)
         return (
             <SearchPresenter
                 movieResults={movieResults}

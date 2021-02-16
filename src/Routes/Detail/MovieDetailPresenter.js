@@ -3,6 +3,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import Loader from "../../Components/Poster";
+
 import Helmet from "react-helmet";
 import {Link} from "react-router-dom" //withRouter를 이용하여 컴포넌트 연결
 
@@ -54,8 +55,20 @@ width:20%;
 `
 
 const Title=styled.h3`
+float:left;
 font-size:32px;
 margin-bottom:20px;
+`
+const ShowCollection=styled(Link)`
+margin-right:10px;
+border-radius:5px;
+background-color:rgba(255,255,255,0.4);
+padding:5px;
+float:right;
+border:1px solid #bdbdbd;
+&:hover{
+    background-color:rgba(255,255,255,0.6);
+}
 
 `
 const Item =styled.span`
@@ -159,19 +172,28 @@ const MovieDetailPresenter = ({result,loading,error})=>(
     <Cover bgImage={result.poster_path? `https://image.tmdb.org/t/p/original${result.poster_path}`:require("../../assects/noimage.jpeg")}/>
    <Data>
     <Title>{result.original_title?result.original_title:result.original_name}</Title>
-    <ItemContainer>
+    <IMDCIcon bgUrl={require("../../assects/imdb.png").default}
+        href={result.imdb_id?`https://www.imdb.com/title/${result.imdb_id}`:""}
+        target="_blank"> </IMDCIcon>
+        {result.belongs_to_collection&&result.belongs_to_collection.id&&
+ <ShowCollection  to={result.belongs_to_collection.id&&`/collections/${result.belongs_to_collection.id}`}>Collections</ShowCollection>
+        }
+           <ItemContainer>
         <Item>{
         result.release_date?
         result.release_date.substring(0,4)
         :result.first_air_date.substring(0,4)}
         </Item>
-        <Divider>·</Divider>
+        {result.release_date?<Divider>·</Divider>:""}
+        {result.first_air_date?<Divider>·</Divider>:""}
         <Item>{
         result.runtime
         ? result.runtime
         : result.episode_run_ime}
         </Item>
-        <Divider>·</Divider>
+        {result.runtime?<Divider>·</Divider>:""}
+        {result.episode_run_ime?<Divider>·</Divider>:""}
+      
         <Item>{
         result.genres&& 
         result.genres.map((genre,i)=>
@@ -179,19 +201,12 @@ const MovieDetailPresenter = ({result,loading,error})=>(
         }
         </Item>
         <Item>
-        <IMDCIcon bgUrl={require("../../assects/imdb.png").default}
-        href={result.imdb_id?`https://www.imdb.com/title/${result.imdb_id}`:""}
-        target="_blank"> </IMDCIcon>
+       
         
         </Item>
     </ItemContainer>
     <Overview>{result.overview}</Overview>
-{result.belongs_to_collection&&
-<Collections to={result.belongs_to_collection.id&&`/collections/${result.belongs_to_collection.id}`}
-bgImage={result.belongs_to_collection.poster_path?
-`https://image.tmdb.org/t/p/original${result.belongs_to_collection.poster_path}`:""}
 
-></Collections>}
    
 {result.videos.results&&result.videos.results.length>0&&
             <VideoArea>
@@ -234,6 +249,7 @@ bgImage={result.belongs_to_collection.poster_path?
       </ProductionArea>
     }
     </ProductionData>
+    
     </Content>
 
     </Container>

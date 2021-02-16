@@ -11,11 +11,25 @@ export default class extends React.Component {
                 pathname
             }} = props;
         this.state = {
+            parsedId:null,
             result: null,
             error: null,
             loading: true,
             isMovie: pathname.includes("/movie/")
         }
+    }
+     chageSeason=async (num)=>{
+       const {data} = await TVApi.season(this.state.parsedId,parseInt(num));
+       let result = this.state.result;
+       result.episodes=data.episodes;
+       result.episode_detail=data.episodes[0];
+       this.setState({result})
+    }
+
+    changeOverview=async (episode)=>{
+        let result = this.state.result;
+       result.episode_detail=episode;
+       this.setState({result})
     }
 
     async componentDidMount() {
@@ -33,23 +47,29 @@ export default class extends React.Component {
             }
         } = this.props;
         const {isMovie} = this.state;
-        const parsedId = parseInt(id);
-        if (isNaN(parsedId)) {
+
+        const parseId = parseInt(id);
+        this.setState({parsedId:id});
+
+  
+        if (isNaN(parseId)) {
             return push("/");
         }
-
+       
         let result=null;
         let season=null;
+   
         try{
             if(isMovie)
                 //const ={}와 같음
                 //let request = await MovieApi.movieDetail(parsedId))
                 //result = request.data와 같음
-                ({data:result}=await MovieApi.movieDetail(parsedId));
+                ({data:result}=await MovieApi.movieDetail(parseId));
             else{
-                ({data:season}= await TVApi.season(parsedId,1));
-                ({data:result}= await TVApi.showDetail(parsedId));
+                ({data:season}= await TVApi.season(parseId,1));
+                ({data:result}= await TVApi.showDetail(parseId));
                 result.episodes=[...season.episodes];
+                result.episode_detail=result.episodes[0];
             }
         }catch(e){
             this.setState({error:"Cant't find anything."})
@@ -63,7 +83,7 @@ export default class extends React.Component {
         console.log(result);
         return (
             isMovie? <MovieDetailPresenter result={result} error={error} loading={loading}/>:
-            <TVDetailPresenter result={result}  error={error} loading={loading}/>
+            <TVDetailPresenter result={result}  error={error} loading={loading} chageSeason={this.chageSeason}changeOverview={this.changeOverview}/>
            
         );
     }

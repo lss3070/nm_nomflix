@@ -20,6 +20,7 @@ export default() => (
             <Route path="/movie/:id" component={Detail}/>
             <Route path="/show/:id" component={Detail}/>
             <Route path="/collections/:id" component={Collection}/>
+            <Route path="/seasions/:type/:id/:maxseasion" component={Collection}/>
             <Redirect from="*" to="/"/>
         </Switch>
     </Router>

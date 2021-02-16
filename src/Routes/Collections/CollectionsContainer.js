@@ -1,6 +1,6 @@
 import React from "react";
 import CollectionsPresenter from "./CollectionsPresenter";
-import {MovieApi as moviesApi} from "../../api";
+import {MovieApi as moviesApi, TVApi} from "../../api";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default class extends React.Component{
@@ -12,15 +12,19 @@ export default class extends React.Component{
         }
     state={
         collections:null,
+        seasions:[],
         error:null,
-        loading:true
+        loading:true,
+        isMove:true
     };
 
    async componentDidMount(){
     const {
         match: {
             params: {
-                id
+                type,
+                id,
+                maxseasion
             }
         },
         history: {
@@ -33,10 +37,25 @@ export default class extends React.Component{
         return push("/");
     }
         try{
-            const {data} = await moviesApi.collections(parsedId);
-            this.setState({
-                collections:data
-            })
+            if(!type){
+                const {data} = await moviesApi.collections(parsedId);
+                this.setState({
+                    collections:data
+                })
+            }else{
+                let seasions=[];
+                for(let i=1;i<=maxseasion;i++){
+                    let {data}=await TVApi.season(parsedId,i)
+                    data.origin_id=parsedId;
+                    seasions.push(data);
+                    
+                }
+                this.setState({
+                    seasions:seasions
+                })
+            }
+          
+   
             
         }catch(e){
             this.setState({
@@ -49,10 +68,11 @@ export default class extends React.Component{
         }
     }
     render() {
-        const {collections,error,loading}= this.state;
+        const {collections,seasions,error,loading}= this.state;
         return (
             <CollectionsPresenter
             collections={collections}
+            seasions={seasions}
                 error={error}
                 loading={loading}
             />
